@@ -84,18 +84,6 @@ class Content extends Component {
     }
   }
 
-  // mergeObjectsInUnique<T>(array: T[], property: any): T[] {
-
-  //   const newArray = new Map();
-  
-  //   array.forEach((item: T) => {
-  //     const propertyValue = item[property];
-  //     newArray.has(propertyValue) ? newArray.set(propertyValue, { ...item, ...newArray.get(propertyValue) }) : 
-  //   });
-  
-  //   return Array.from(newArray.values());
-  // }
-
   render() {
     return (
       <div id="content-wrapper" className="d-flex flex-column">
