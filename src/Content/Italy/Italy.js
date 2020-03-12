@@ -8,8 +8,6 @@ const Italy = props => {
       <div className="row">
         <div className="col">
           <Chart
-            width={"600px"}
-            height={"400px"}
             chartType="LineChart"
             loader={<div>Loading Chart</div>}
             data={props.lineChartData}

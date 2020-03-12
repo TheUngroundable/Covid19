@@ -66,7 +66,7 @@ class Content extends Component {
 
   getGeoChartData() {
     const contagedData = this.state.covidData?.confirmed?.locations
-      .filter(contaged => contaged[1] != 0)
+      .filter(contaged => contaged[1] !== 0)
       .map(location => [location.country_code, location.latest]);
     if (contagedData) {
 
