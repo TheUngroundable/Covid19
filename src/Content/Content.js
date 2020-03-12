@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Navbar from "../Navbar/Navbar";
 import axios from "axios";
-import Card from "./Card/Card";
 import Chart from "react-google-charts";
+import Worldwide from "./Worldwide/Card/Worldwide";
+import Italy from "./Italy/Italy";
 
 class Content extends Component {
   state = {
@@ -15,6 +16,7 @@ class Content extends Component {
       .get("https://coronavirus-tracker-api.herokuapp.com/all")
       .then(res => {
         this.setState({ covidData: res.data });
+        console.log(this.state.covidData);
       })
       .catch(error => this.setState({ error }));
   }
@@ -35,11 +37,10 @@ class Content extends Component {
       : 0;
   }
 
-  getLineChartData() {
-    const italy = this.state.covidData.confirmed?.locations
+  getItalyLineChartData() {
+    const italy = this.state?.covidData?.confirmed?.locations
       .filter(location => location.country_code === "IT")
       .pop();
-    console.log(italy);
 
     if (italy?.history) {
       const historyKeys = Object.keys(italy.history);
@@ -52,8 +53,7 @@ class Content extends Component {
         ["x", "Cases"],
         ...sortedKeys?.map((key, index) => [index, +italy?.history[key]])
       ];
-      console.log(lineData);
-      return lineData;
+      return lineData.filter(data => data[1] !== 0);
     }
   }
 
@@ -64,6 +64,38 @@ class Content extends Component {
       .slice(0, -2);
   }
 
+  getGeoChartData() {
+    const contagedData = this.state.covidData?.confirmed?.locations
+      .filter(contaged => contaged[1] != 0)
+      .map(location => [location.country_code, location.latest]);
+    if (contagedData) {
+
+      const mergedCountries = new Map();
+
+      contagedData.forEach(data => {
+        const key = data[0];
+        if(mergedCountries.has(key)){
+          // mergedCountries.add(data[1], )
+        } else {
+          mergedCountries.set(key, data[1]);
+        }
+      });
+      return [["Country", "Cases"], ...mergedCountries];
+    }
+  }
+
+  // mergeObjectsInUnique<T>(array: T[], property: any): T[] {
+
+  //   const newArray = new Map();
+  
+  //   array.forEach((item: T) => {
+  //     const propertyValue = item[property];
+  //     newArray.has(propertyValue) ? newArray.set(propertyValue, { ...item, ...newArray.get(propertyValue) }) : 
+  //   });
+  
+  //   return Array.from(newArray.values());
+  // }
+
   render() {
     return (
       <div id="content-wrapper" className="d-flex flex-column">
@@ -71,50 +103,14 @@ class Content extends Component {
           <Navbar></Navbar>
 
           <div className="container-fluid">
-            <h1 className="h3 mb-4 text-gray-800">Covid-19 Data</h1>
-            <div className="row">
-              <div className="col">
-                <Card
-                  background="bg-danger"
-                  title="Deaths"
-                  count={this.getDeathsCount()}
-                />
-              </div>
-              <div className="col">
-                <Card
-                  background="bg-warning"
-                  title="Confirmed"
-                  count={this.getConfirmedCount()}
-                />
-              </div>
-              <div className="col">
-                <Card
-                  background="bg-success"
-                  title="Recovered"
-                  count={this.getRecoveredCount()}
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <Chart
-                  width={"600px"}
-                  height={"400px"}
-                  chartType="LineChart"
-                  loader={<div>Loading Chart</div>}
-                  data={this.getLineChartData()}
-                  options={{
-                    hAxis: {
-                      title: "Time"
-                    },
-                    vAxis: {
-                      title: "Cases"
-                    }
-                  }}
-                  rootProps={{ "data-testid": "1" }}
-                />
-              </div>
-            </div>
+            <Worldwide
+              deathsCount={this.getDeathsCount()}
+              confirmedCount={this.getConfirmedCount()}
+              recoveredCount={this.getRecoveredCount()}
+              geoChartData={this.getGeoChartData()}
+            />
+            <hr />
+            <Italy lineChartData={this.getItalyLineChartData()} />
           </div>
         </div>
       </div>
