@@ -22,6 +22,23 @@ const Italy = props => {
             rootProps={{ "data-testid": "1" }}
           />
         </div>
+        <div className="col">
+          <Chart
+            width={"500px"}
+            height={"300px"}
+            chartType="GeoChart"
+            data={props.geoChartData}
+            options={{
+              region: "IT",
+              displayMode: "markers",
+              colorAxis: { colors: ["green", "red"] }
+            }}
+            // Note: you will need to get a mapsApiKey for your project.
+            // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+            mapsApiKey="AIzaSyD0WCEi-DgZW0t3AYDxw5XDSXN4L3DackY"
+            rootProps={{ "data-testid": "2" }}
+          />
+        </div>
       </div>
     </div>
   );

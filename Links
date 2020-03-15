@@ -1,3 +1,11 @@
 https://corona.lmao.ninja/countries
 
 https://github.com/ExpDev07/coronavirus-tracker-api => https://coronavirus-tracker-api.herokuapp.com/all
+
+
+Mappa Italia:
+https://services6.arcgis.com/L1SotImj1AAZY1eK/arcgis/rest/services/COVID19__Regioni/FeatureServer/0/query?f=json&where=totale_casi%20%3E%200&returnGeometry=false&spatialRel=esriSpatialRelIntersects&outFields=*&orderByFields=totale_casi%20desc&resultOffset=0&resultRecordCount=25&cacheHint=true
+
+
+API KEY: 
+AIzaSyD0WCEi-DgZW0t3AYDxw5XDSXN4L3DackY
